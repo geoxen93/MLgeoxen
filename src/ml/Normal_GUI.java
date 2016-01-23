@@ -10,8 +10,11 @@ import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -39,6 +42,7 @@ public class Normal_GUI extends javax.swing.JFrame {
         
         jLabel_log.setText("Loged in as:  "+ml.Login.logeduser.intern());
         jLabel_log2.setText("Loged in as:  "+ml.Login.logeduser.intern());
+        jTextField_Id.setEditable(false);
          }
     
     
@@ -396,15 +400,43 @@ int value=0;
     }//GEN-LAST:event_jTable_Display_UsersMouseClicked
 
     private void jButton_InsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_InsertActionPerformed
-        String query = "INSERT INTO douleia (id,fname, lname, age) VALUES ('"+jTextField_Id.getText()+"' , '"+jTextField_FirstName.getText()+"' , '"+jTextField_LastName.getText()+"' , '"+jTextField_Age.getText()+"'  )";
-       int value=100; 
-     jProgressBar1.setValue(value);
-     
+        try {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+	Connection conn;
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root","1520");
+            
         
-        executeSQlQuery(query, "Inserted");
+					
+					int count = 102;
+					String querry = "SELECT * FROM douleia";
+					Statement st1 = conn.createStatement();
+					ResultSet rs = st1.executeQuery(querry);
+					while (rs.next()) {
+						count++;
+					}
+					st1.close();
+                 
+        String query = "INSERT INTO douleia (id,fname, lname, age) VALUES ('"+ count +"' , '"+jTextField_FirstName.getText()+"' , '"+jTextField_LastName.getText()+"' , '"+jTextField_Age.getText()+"')";
+        
+                
+        int value=100;
+        jProgressBar1.setValue(value);
+        
+        
+        executeSQlQuery(query, " Inserted" );
+                
+        
         value=0;
-       jProgressBar1.setValue(value);
-        
+        jProgressBar1.setValue(value);
+        } catch (SQLException ex) {
+            Logger.getLogger(Admin_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Admin_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Admin_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Admin_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton_InsertActionPerformed
 
     private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
@@ -434,7 +466,7 @@ int value=0;
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Search_Module();
+        new Search_Module_Normal();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
