@@ -196,7 +196,10 @@ public class Login extends javax.swing.JFrame {
                 logeduser = txtusername.getText();
                 Admin_GUI w=new Admin_GUI();
                 w.setVisible(true);
+                this.setVisible(false);
                 
+               
+ 
             }
             else{
                 JOptionPane.showMessageDialog(null,"Invalid Username or Password","Access Denied",JOptionPane.ERROR_MESSAGE);
